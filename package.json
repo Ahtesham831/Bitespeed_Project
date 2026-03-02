@@ -1,0 +1,33 @@
+{
+  "name": "bitespeed-backend",
+  "version": "1.0.0",
+  "description": "Bitespeed Identity Reconciliation Backend Service",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "jest --forceExit --detectOpenHandles",
+    "migrate": "npx prisma migrate dev",
+    "db:migrate": "npx prisma migrate dev",
+    "db:generate": "npx prisma generate",
+    "db:push": "npx prisma db push"
+  },
+  "keywords": [
+    "bitespeed",
+    "identity",
+    "reconciliation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "prisma": "^5.0.0",
+    "supertest": "^6.3.3"
+  }
+}
