@@ -1,6 +1,6 @@
 # 🧠 Bitespeed Identity Reconciliation Service
 
-A production-ready backend service that consolidates customer identity based on **email** and **phone number**. Built as part of the [Bitespeed Backend Task](https://bitespeed.io/backend-task).
+A production-ready backend service that consolidates customer identity based on **email** and **phone number**.
 
 > **🌐 Live Demo:** [https://bitespeed-project-oygu.onrender.com/]
 
