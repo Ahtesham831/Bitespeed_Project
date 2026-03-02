@@ -7,62 +7,60 @@
   <meta name="description" content="Bitespeed Identity Reconciliation - Consolidate customer identity based on email and phone number" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after {
       margin: 0; padding: 0; box-sizing: border-box;
     }
 
     :root {
-      --bg-primary: #0a0e1a;
-      --bg-secondary: #111827;
-      --bg-card: #1a1f35;
-      --bg-card-hover: #1f2642;
+      --bg-primary: #06080f;
+      --bg-secondary: #0d1117;
+      --bg-card: rgba(17, 22, 36, 0.85);
+      --bg-card-border: rgba(99, 102, 241, 0.08);
+      --bg-input: #0c101c;
       --accent: #6366f1;
       --accent-light: #818cf8;
-      --accent-glow: rgba(99, 102, 241, 0.25);
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --border: #2a3050;
-      --success: #22c55e;
-      --success-bg: rgba(34, 197, 94, 0.1);
-      --error: #ef4444;
-      --error-bg: rgba(239, 68, 68, 0.1);
-      --radius: 16px;
-      --radius-sm: 10px;
-      --shadow: 0 8px 32px rgba(0,0,0,0.3);
+      --accent-dim: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.2);
+      --accent-glow-strong: rgba(99, 102, 241, 0.35);
+      --purple: #a78bfa;
+      --text-primary: #f0f2f8;
+      --text-secondary: #8b95b0;
+      --text-muted: #505a73;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-focus: rgba(99, 102, 241, 0.5);
+      --success: #34d399;
+      --success-bg: rgba(52, 211, 153, 0.08);
+      --success-border: rgba(52, 211, 153, 0.15);
+      --error: #f87171;
+      --error-bg: rgba(248, 113, 113, 0.08);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --radius-xs: 8px;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg-primary);
+      background-image: radial-gradient(ellipse at 20% 0%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 100%, rgba(139,92,246,0.06) 0%, transparent 50%);
+      background-attachment: fixed;
       color: var(--text-primary);
       min-height: 100vh;
       overflow-x: hidden;
-    }
-
-    /* Animated background */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.08) 0%, transparent 50%),
-                  radial-gradient(ellipse at 70% 80%, rgba(139,92,246,0.06) 0%, transparent 50%);
-      animation: bgShift 20s ease-in-out infinite alternate;
-      z-index: -1;
-    }
-
-    @keyframes bgShift {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-5%, -5%); }
+      -webkit-font-smoothing: antialiased;
     }
 
     .container {
-      max-width: 960px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 48px 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Header */
@@ -74,47 +72,51 @@
     .header__badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 16px;
-      background: var(--accent-glow);
-      border: 1px solid rgba(99,102,241,0.3);
+      gap: 8px;
+      padding: 7px 18px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
       border-radius: 50px;
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--accent-light);
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(12px);
     }
 
-    .header__badge::before {
-      content: '';
-      width: 8px; height: 8px;
+    .header__badge-dot {
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--success);
+      box-shadow: 0 0 8px rgba(52,211,153,0.6);
       animation: pulse 2s ease-in-out infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(52,211,153,0.6); }
+      50% { opacity: 0.5; box-shadow: 0 0 4px rgba(52,211,153,0.3); }
     }
 
     .header h1 {
-      font-size: 36px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-light) 100%);
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent-light) 50%, var(--purple) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      line-height: 1.15;
     }
 
     .header p {
       color: var(--text-secondary);
-      font-size: 16px;
-      max-width: 500px;
+      font-size: clamp(14px, 2vw, 16px);
+      max-width: 440px;
       margin: 0 auto;
+      line-height: 1.6;
     }
 
     /* Main Layout */
@@ -122,11 +124,8 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
+      flex: 1;
       align-items: start;
-    }
-
-    @media (max-width: 768px) {
-      .main-grid { grid-template-columns: 1fr; }
     }
 
     /* Card */
@@ -134,40 +133,27 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 28px;
-      box-shadow: var(--shadow);
+      padding: 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.2);
       transition: border-color 0.3s ease;
     }
 
     .card:hover {
-      border-color: rgba(99,102,241,0.3);
+      border-color: var(--bg-card-border);
     }
 
     .card__title {
       font-size: 18px;
       font-weight: 700;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      letter-spacing: -0.2px;
+      margin-bottom: 6px;
     }
-
-    .card__title-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px; height: 36px;
-      border-radius: var(--radius-sm);
-      font-size: 18px;
-    }
-
-    .card__title-icon.purple { background: rgba(99,102,241,0.15); }
-    .card__title-icon.green { background: rgba(34,197,94,0.15); }
 
     .card__subtitle {
       font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      line-height: 1.5;
     }
 
     /* Form */
@@ -177,42 +163,51 @@
 
     .form-group label {
       display: block;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
       margin-bottom: 8px;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
 
     .form-group input {
       width: 100%;
-      padding: 12px 16px;
-      background: var(--bg-secondary);
+      padding: 13px 16px;
+      background: var(--bg-input);
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
       color: var(--text-primary);
       font-family: inherit;
       font-size: 14px;
+      font-weight: 400;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
     }
 
     .form-group input::placeholder {
       color: var(--text-muted);
+      font-weight: 400;
     }
 
     .form-group input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--accent-glow), 0 2px 8px rgba(99,102,241,0.08);
+      background: rgba(99,102,241,0.03);
     }
 
     /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      width: 100%;
       padding: 14px 24px;
       font-family: inherit;
       font-size: 14px;
@@ -220,18 +215,20 @@
       border-radius: var(--radius-sm);
       border: none;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      letter-spacing: 0.2px;
     }
 
     .btn--primary {
-      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+      flex: 1;
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
       color: #fff;
       box-shadow: 0 4px 16px var(--accent-glow);
     }
 
     .btn--primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 24px var(--accent-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--accent-glow-strong), 0 2px 6px rgba(0,0,0,0.3);
     }
 
     .btn--primary:active {
@@ -239,39 +236,40 @@
     }
 
     .btn--primary:disabled {
-      opacity: 0.6;
+      opacity: 0.5;
       cursor: not-allowed;
       transform: none;
+      animation: none;
     }
 
-    .btn--secondary {
+    .btn--ghost {
       background: transparent;
       border: 1.5px solid var(--border);
-      color: var(--text-secondary);
-      margin-top: 10px;
+      color: var(--text-muted);
+      padding: 14px 18px;
     }
 
-    .btn--secondary:hover {
-      background: var(--bg-card-hover);
-      color: var(--text-primary);
+    .btn--ghost:hover {
+      background: rgba(255,255,255,0.03);
+      border-color: rgba(255,255,255,0.1);
+      color: var(--text-secondary);
     }
 
     /* Spinner */
     .spinner {
       width: 18px; height: 18px;
-      border: 2.5px solid rgba(255,255,255,0.3);
+      border: 2.5px solid rgba(255,255,255,0.2);
       border-top-color: #fff;
       border-radius: 50%;
       animation: spin 0.6s linear infinite;
     }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Response Area */
     .response-area {
-      min-height: 200px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
     }
 
     .response-placeholder {
@@ -279,289 +277,167 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 200px;
+      flex: 1;
+      min-height: 240px;
       color: var(--text-muted);
       text-align: center;
+      gap: 12px;
     }
 
     .response-placeholder__icon {
-      font-size: 48px;
-      margin-bottom: 12px;
-      opacity: 0.4;
+      font-size: 36px;
+      opacity: 0.3;
     }
 
     .response-placeholder__text {
       font-size: 14px;
+      font-weight: 500;
     }
 
-    /* Result Display */
+    .response-placeholder__hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    /* Result */
     .result {
-      animation: fadeIn 0.4s ease;
+      animation: resultIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes resultIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .result__status {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 6px 16px;
       border-radius: 50px;
       font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
     }
 
     .result__status--success {
       background: var(--success-bg);
       color: var(--success);
-      border: 1px solid rgba(34,197,94,0.2);
+      border: 1px solid var(--success-border);
     }
 
     .result__status--error {
       background: var(--error-bg);
       color: var(--error);
-      border: 1px solid rgba(239,68,68,0.2);
+      border: 1px solid rgba(248,113,113,0.15);
     }
 
-    .result-field {
-      margin-bottom: 16px;
-    }
-
-    .result-field__label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 6px;
-    }
-
-    .result-field__value {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-
-    .result-field__value--id {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--accent-light);
-    }
-
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 5px 12px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      font-size: 13px;
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    .tag--secondary {
-      background: rgba(139,92,246,0.1);
-      border-color: rgba(139,92,246,0.2);
-      color: #a78bfa;
-    }
-
-    .tag--empty {
-      color: var(--text-muted);
-      font-style: italic;
-      border-style: dashed;
-    }
-
-    /* JSON toggle */
-    .json-toggle {
-      margin-top: 20px;
-      border-top: 1px solid var(--border);
-      padding-top: 16px;
-    }
-
-    .json-toggle__btn {
-      background: none;
-      border: none;
-      color: var(--accent-light);
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0;
-      transition: color 0.2s;
-    }
-
-    .json-toggle__btn:hover { color: var(--accent); }
-
-    .json-toggle__content {
-      margin-top: 12px;
-    }
-
-    .json-toggle__content pre {
-      background: var(--bg-secondary);
+    .result pre {
+      background: var(--bg-input);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 16px;
+      padding: 20px;
       overflow-x: auto;
-      font-size: 12px;
-      line-height: 1.6;
+      font-size: 13px;
+      line-height: 1.7;
       color: var(--text-secondary);
-    }
-
-    /* History section */
-    .history {
-      margin-top: 32px;
-    }
-
-    .history__title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .history__list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .history__item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .history__item:hover {
-      background: var(--bg-card-hover);
-      border-color: rgba(99,102,241,0.2);
-    }
-
-    .history__item-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .history__item-req {
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .history__item-time {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .history__item-id {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--accent-light);
-    }
-
-    .history__empty {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 13px;
-      padding: 24px;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
 
     /* Footer */
     .footer {
       text-align: center;
       margin-top: 48px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
+      padding-top: 20px;
       color: var(--text-muted);
       font-size: 12px;
+      opacity: 0.6;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .container { padding: 28px 16px; }
+      .header { margin-bottom: 32px; }
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .card { padding: 24px 20px; border-radius: 16px; }
+      .card__title { font-size: 16px; }
+      .result-field__value--id { font-size: 26px; }
+      .btn-group { flex-direction: column; }
+      .btn--ghost { order: 1; }
+    }
+
+    @media (max-width: 420px) {
+      .container { padding: 20px 12px; }
+      .header__badge { font-size: 10px; padding: 5px 14px; }
+      .card { padding: 20px 16px; border-radius: 14px; }
+      .form-group input { padding: 12px 14px; font-size: 13px; }
     }
   </style>
 </head>
 <body>
+
+
   <div class="container">
     <!-- Header -->
     <header class="header">
       <div class="header__badge">
-        <span>Live</span>
+        <span class="header__badge-dot"></span>
+        <span>Live Service</span>
       </div>
       <h1>Identity Reconciliation</h1>
-      <p>Consolidate customer identity by email and phone number</p>
+      <p>Consolidate customer identity by email and phone number in real time</p>
     </header>
 
     <!-- Main Grid -->
     <div class="main-grid">
-      <!-- Left: Form Card -->
+      <!-- Form Card -->
       <div class="card">
-        <div class="card__title">
-          <span class="card__title-icon purple">🔍</span>
-          Identify Contact
-        </div>
+        <div class="card__title">Identify Contact</div>
         <p class="card__subtitle">Enter an email and/or phone number to identify and consolidate a contact.</p>
 
         <form id="identifyForm">
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="e.g. john@example.com" autocomplete="off" />
+            <input type="email" id="email" name="email" placeholder="john@example.com" autocomplete="off" />
           </div>
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
-            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="e.g. 1234567890" autocomplete="off" />
+            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="1234567890" autocomplete="off" />
           </div>
-          <button type="submit" id="submitBtn" class="btn btn--primary">
-            <span id="btnText">Identify Contact</span>
-            <div id="btnSpinner" class="spinner" style="display:none;"></div>
-          </button>
-          <button type="button" id="clearBtn" class="btn btn--secondary">Clear All</button>
+          <div class="btn-group">
+            <button type="submit" id="submitBtn" class="btn btn--primary">
+              <span id="btnText">Identify</span>
+              <div id="btnSpinner" class="spinner" style="display:none;"></div>
+            </button>
+            <button type="button" id="clearBtn" class="btn btn--ghost">Clear</button>
+          </div>
         </form>
       </div>
 
-      <!-- Right: Response Card -->
+      <!-- Response Card -->
       <div class="card">
-        <div class="card__title">
-          <span class="card__title-icon green">📋</span>
-          Response
-        </div>
+        <div class="card__title">Response</div>
         <p class="card__subtitle">Consolidated contact information will appear here.</p>
 
         <div id="responseArea" class="response-area">
           <div class="response-placeholder">
-            <div class="response-placeholder__icon">📬</div>
-            <div class="response-placeholder__text">Submit a request to see results</div>
+            <div class="response-placeholder__icon">—</div>
+            <div class="response-placeholder__text">No request sent yet</div>
+            <div class="response-placeholder__hint">Submit a request to see the consolidated result</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- History -->
-    <div class="history card" style="margin-top:24px;">
-      <div class="history__title">🕓 Request History</div>
-      <div id="historyList" class="history__list">
-        <div class="history__empty">No requests yet</div>
-      </div>
-    </div>
-
     <footer class="footer">
-      Bitespeed Identity Reconciliation &bull; Built with Express.js &amp; Prisma
+      Bitespeed Identity Reconciliation &bull; Express.js &amp; Prisma
     </footer>
   </div>
 
@@ -573,14 +449,10 @@
     const btnText = document.getElementById('btnText');
     const btnSpinner = document.getElementById('btnSpinner');
     const responseArea = document.getElementById('responseArea');
-    const historyList = document.getElementById('historyList');
     const clearBtn = document.getElementById('clearBtn');
-
-    let history = [];
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-
       const email = emailInput.value.trim() || null;
       const phoneNumber = phoneInput.value.trim() || null;
 
@@ -590,24 +462,20 @@
       }
 
       setLoading(true);
-
       try {
-        const response = await fetch('/identify', {
+        const res = await fetch('/identify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, phoneNumber }),
         });
-
-        const data = await response.json();
-
+        const data = await res.json();
         if (data.error) {
           showError(data.error);
         } else {
           showResult(data);
-          addToHistory(email, phoneNumber, data);
         }
       } catch (err) {
-        showError('Failed to connect to server. Is it running?');
+        showError('Failed to connect to the server. Is it running?');
       } finally {
         setLoading(false);
       }
@@ -619,105 +487,38 @@
       responseArea.innerHTML = `
         <div class="response-placeholder">
           <div class="response-placeholder__icon">📬</div>
-          <div class="response-placeholder__text">Submit a request to see results</div>
+          <div class="response-placeholder__text">No request sent yet</div>
+          <div class="response-placeholder__hint">Submit a request to see the consolidated result</div>
         </div>`;
     });
 
-    function setLoading(loading) {
-      submitBtn.disabled = loading;
-      btnText.style.display = loading ? 'none' : 'inline';
-      btnSpinner.style.display = loading ? 'block' : 'none';
+    function setLoading(on) {
+      submitBtn.disabled = on;
+      btnText.style.display = on ? 'none' : 'inline';
+      btnSpinner.style.display = on ? 'block' : 'none';
     }
 
-    function showError(message) {
+    function showError(msg) {
       responseArea.innerHTML = `
         <div class="result">
-          <div class="result__status result__status--error">⚠️ Error</div>
-          <p style="color:var(--text-secondary);font-size:14px;">${escapeHtml(message)}</p>
+          <div class="result__status result__status--error">Error</div>
+          <p style="color:var(--text-secondary);font-size:14px;line-height:1.6;">${esc(msg)}</p>
         </div>`;
     }
 
     function showResult(data) {
-      const c = data.contact;
-      const emailTags = c.emails.length
-        ? c.emails.map(e => `<span class="tag">${escapeHtml(e)}</span>`).join('')
-        : '<span class="tag tag--empty">None</span>';
-
-      const phoneTags = c.phoneNumbers.length
-        ? c.phoneNumbers.map(p => `<span class="tag">${escapeHtml(p)}</span>`).join('')
-        : '<span class="tag tag--empty">None</span>';
-
-      const secondaryTags = c.secondaryContactIds.length
-        ? c.secondaryContactIds.map(id => `<span class="tag tag--secondary">#${id}</span>`).join('')
-        : '<span class="tag tag--empty">None</span>';
-
       responseArea.innerHTML = `
         <div class="result">
-          <div class="result__status result__status--success">✅ Success</div>
-
-          <div class="result-field">
-            <div class="result-field__label">Primary Contact ID</div>
-            <div class="result-field__value result-field__value--id">#${c.primaryContactId}</div>
-          </div>
-
-          <div class="result-field">
-            <div class="result-field__label">Emails</div>
-            <div class="tag-list">${emailTags}</div>
-          </div>
-
-          <div class="result-field">
-            <div class="result-field__label">Phone Numbers</div>
-            <div class="tag-list">${phoneTags}</div>
-          </div>
-
-          <div class="result-field">
-            <div class="result-field__label">Secondary Contact IDs</div>
-            <div class="tag-list">${secondaryTags}</div>
-          </div>
-
-          <div class="json-toggle">
-            <button class="json-toggle__btn" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
-              ▸ View Raw JSON
-            </button>
-            <div class="json-toggle__content" style="display:none;">
-              <pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>
-            </div>
-          </div>
+          <div class="result__status result__status--success">Success</div>
+          <pre>${esc(JSON.stringify(data, null, 2))}</pre>
         </div>`;
     }
 
-    function addToHistory(email, phoneNumber, data) {
-      const entry = {
-        email, phoneNumber,
-        primaryId: data.contact.primaryContactId,
-        time: new Date().toLocaleTimeString(),
-      };
-      history.unshift(entry);
-      if (history.length > 10) history.pop();
-      renderHistory();
-    }
-
-    function renderHistory() {
-      if (history.length === 0) {
-        historyList.innerHTML = '<div class="history__empty">No requests yet</div>';
-        return;
-      }
-      historyList.innerHTML = history.map(h => `
-        <div class="history__item" onclick="document.getElementById('email').value='${h.email || ''}';document.getElementById('phoneNumber').value='${h.phoneNumber || ''}';">
-          <div class="history__item-info">
-            <div class="history__item-req">${escapeHtml(h.email || '—')} / ${escapeHtml(h.phoneNumber || '—')}</div>
-            <div class="history__item-time">${h.time}</div>
-          </div>
-          <div class="history__item-id">Primary #${h.primaryId}</div>
-        </div>
-      `).join('');
-    }
-
-    function escapeHtml(str) {
-      if (!str) return '';
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
+    function esc(s) {
+      if (!s) return '';
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
     }
   </script>
 </body>
